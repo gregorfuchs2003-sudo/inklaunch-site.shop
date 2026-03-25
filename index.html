@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InkLaunch | Turn Views Into Clients</title>
+  <meta name="description" content="InkLaunch helps tattoo artists turn TikTok views into real client bookings with strategic short-form edits, captions, and hashtags." />
+  <meta property="og:title" content="InkLaunch | Turn Views Into Clients" />
+  <meta property="og:description" content="Professional TikTok content support for tattoo artists." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/inklaunch-logo.jpg" />
+  <link rel="icon" href="assets/favicon.jpg" />
+  <style>
+    :root{
+      --bg:#060814;
+      --bg-soft:#0d1224;
+      --card:#0e152b;
+      --card-2:#121b36;
+      --line:rgba(255,255,255,.10);
+      --text:#f5f7ff;
+      --muted:#b7bed6;
+      --blue:#42c8ff;
+      --pink:#ff4aa5;
+      --purple:#7c5cff;
+      --glow:0 0 30px rgba(66,200,255,.15),0 0 60px rgba(255,74,165,.12);
+      --radius:24px;
+      --shadow:0 18px 60px rgba(0,0,0,.35);
+      --max:1180px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(66,200,255,.16), transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(255,74,165,.14), transparent 25%),
+        radial-gradient(circle at 50% 80%, rgba(124,92,255,.14), transparent 25%),
+        linear-gradient(180deg,#05070f 0%, #070c1b 45%, #05070f 100%);
+      line-height:1.55;
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{width:min(calc(100% - 32px), var(--max)); margin:0 auto}
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(16px);
+      background:rgba(6,8,20,.66);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 0;
+      gap:24px;
+    }
+    .brand{display:flex; align-items:center; gap:14px; font-weight:800; letter-spacing:.2px}
+    .brand img{
+      width:46px; height:46px; border-radius:50%;
+      object-fit:cover; box-shadow:var(--glow); border:1px solid rgba(255,255,255,.12);
+    }
+    .brand small{display:block; color:var(--muted); font-weight:600; font-size:12px}
+    .nav-links{display:flex; gap:24px; align-items:center}
+    .nav-links a{color:var(--muted); font-weight:600}
+    .nav-links a:hover{color:var(--text)}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      min-height:50px; padding:0 22px; border-radius:999px;
+      font-weight:800; letter-spacing:.2px; transition:.25s ease;
+      border:1px solid transparent; cursor:pointer;
+    }
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(90deg, var(--blue), var(--purple) 55%, var(--pink));
+      box-shadow:0 12px 32px rgba(124,92,255,.28);
+    }
+    .btn-primary:hover{transform:translateY(-2px); box-shadow:0 18px 36px rgba(124,92,255,.38)}
+    .btn-secondary{
+      border-color:rgba(255,255,255,.14);
+      color:var(--text);
+      background:rgba(255,255,255,.03);
+    }
+    .btn-secondary:hover{background:rgba(255,255,255,.06)}
+    .hero{
+      padding:72px 0 46px;
+    }
+    .hero-grid{
+      display:grid; grid-template-columns:1.15fr .85fr; gap:36px; align-items:center;
+    }
+    .eyebrow{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px; border:1px solid rgba(255,255,255,.10);
+      border-radius:999px; color:#dfe7ff; background:rgba(255,255,255,.03);
+      font-size:14px; font-weight:700; margin-bottom:18px;
+    }
+    h1{
+      font-size:clamp(2.5rem, 6vw, 5rem);
+      line-height:.98; margin:0 0 18px; letter-spacing:-.04em;
+    }
+    .gradient{
+      background:linear-gradient(90deg,var(--blue),#b9d8ff 35%, #fff 48%, #ffd4ef 68%, var(--pink));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .lead{
+      color:var(--muted); font-size:clamp(1rem, 1.3vw, 1.15rem); max-width:720px; margin:0 0 28px;
+    }
+    .hero-actions{display:flex; flex-wrap:wrap; gap:14px; margin-bottom:26px}
+    .stats{
+      display:grid; grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:14px; margin-top:18px;
+    }
+    .stat{
+      padding:18px; border-radius:20px; border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      box-shadow:var(--shadow);
+    }
+    .stat strong{display:block; font-size:1.65rem; margin-bottom:4px}
+    .stat span{color:var(--muted); font-weight:600; font-size:14px}
+    .hero-card{
+      position:relative;
+      background:linear-gradient(180deg, rgba(15,23,48,.96), rgba(7,11,24,.92));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:var(--shadow), var(--glow);
+      border-radius:28px;
+      overflow:hidden;
+    }
+    .hero-card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:linear-gradient(120deg, rgba(66,200,255,.42), rgba(124,92,255,.16), rgba(255,74,165,.38));
+      filter:blur(28px); opacity:.28; z-index:0;
+    }
+    .hero-card-inner{position:relative; z-index:1; padding:18px}
+    .hero-logo{
+      border-radius:24px; overflow:hidden; border:1px solid rgba(255,255,255,.10); margin-bottom:16px;
+    }
+    .profile-mini{
+      display:flex; align-items:center; gap:14px; padding:14px;
+      border-radius:20px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08);
+    }
+    .profile-mini img{width:62px; height:62px; object-fit:cover; border-radius:16px}
+    .profile-mini h3{margin:0 0 2px; font-size:1.05rem}
+    .profile-mini p{margin:0; color:var(--muted); font-size:14px}
+    .section{padding:36px 0}
+    .section-title{
+      font-size:clamp(1.8rem,3.5vw,3rem); margin:0 0 10px; letter-spacing:-.03em;
+    }
+    .section-lead{color:var(--muted); margin:0 0 26px; max-width:760px}
+    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:24px}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:26px;
+      box-shadow:var(--shadow);
+    }
+    .card h3{margin-top:0; margin-bottom:10px; font-size:1.25rem}
+    .muted{color:var(--muted)}
+    .feature-list, .simple-list{
+      list-style:none; padding:0; margin:18px 0 0;
+      display:grid; gap:12px;
+    }
+    .feature-list li, .simple-list li{
+      display:flex; gap:12px; align-items:flex-start;
+      color:#e7ecff;
+    }
+    .feature-list li::before, .simple-list li::before{
+      content:"✦"; color:var(--blue); font-weight:900; margin-top:1px;
+    }
+    .package-wrap{
+      display:grid; grid-template-columns:1.1fr .9fr; gap:26px; align-items:stretch;
+    }
+    .price-card{
+      position:relative; overflow:hidden;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(66,200,255,.18), transparent 35%),
+        radial-gradient(circle at 100% 0%, rgba(255,74,165,.18), transparent 32%),
+        linear-gradient(180deg, rgba(12,18,37,.98), rgba(8,12,24,.96));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:28px; padding:30px;
+      box-shadow:var(--shadow), var(--glow);
+    }
+    .badge{
+      display:inline-flex; padding:9px 14px; border-radius:999px;
+      background:rgba(66,200,255,.10); color:#a8ebff;
+      font-size:13px; font-weight:800; letter-spacing:.3px; border:1px solid rgba(66,200,255,.28);
+      margin-bottom:18px;
+    }
+    .price{
+      display:flex; align-items:flex-end; gap:10px; margin:6px 0 10px;
+    }
+    .price .amount{font-size:clamp(3rem,6vw,4.8rem); line-height:1; font-weight:900; letter-spacing:-.05em}
+    .price .cycle{color:var(--muted); font-weight:700; padding-bottom:12px}
+    .package-title{font-size:1.6rem; margin:0 0 8px}
+    .price-note{color:var(--muted); margin-bottom:22px}
+    .price-box{
+      margin-top:16px; padding:18px; border-radius:20px; background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .process-grid{
+      display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
+    }
+    .process-step{
+      padding:22px; border-radius:24px; border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+    }
+    .step-number{
+      width:42px; height:42px; border-radius:50%; display:grid; place-items:center;
+      background:linear-gradient(90deg, var(--blue), var(--pink)); font-weight:900; margin-bottom:16px; color:white;
+    }
+    .faq{display:grid; gap:14px}
+    .faq details{
+      border:1px solid var(--line); border-radius:20px; background:rgba(255,255,255,.03); padding:18px 20px;
+    }
+    .faq summary{
+      cursor:pointer; font-weight:800;
+    }
+    .faq p{color:var(--muted); margin:12px 0 0}
+    .cta{
+      padding:26px; border-radius:28px; border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(66,200,255,.18), transparent 28%),
+        radial-gradient(circle at 80% 25%, rgba(255,74,165,.18), transparent 30%),
+        linear-gradient(180deg, rgba(11,17,34,.96), rgba(7,11,22,.96));
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+    .cta h2{margin:0 0 10px; font-size:clamp(1.9rem,3.8vw,3.2rem)}
+    .cta p{margin:0 auto 20px; color:var(--muted); max-width:760px}
+    footer{
+      padding:34px 0 58px; color:var(--muted);
+    }
+    .footer-inner{
+      display:flex; justify-content:space-between; gap:20px; align-items:center; flex-wrap:wrap;
+      border-top:1px solid rgba(255,255,255,.08); padding-top:22px;
+    }
+    .pill-row{display:flex; flex-wrap:wrap; gap:12px}
+    .pill{
+      padding:10px 14px; border-radius:999px; background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08); color:#e8eeff; font-size:14px; font-weight:700;
+    }
+    @media (max-width: 980px){
+      .hero-grid, .grid-2, .package-wrap{grid-template-columns:1fr}
+      .process-grid{grid-template-columns:1fr}
+      .nav-links{display:none}
+    }
+    @media (max-width: 680px){
+      .hero{padding-top:44px}
+      .stats{grid-template-columns:1fr}
+      .container{width:min(calc(100% - 22px), var(--max))}
+      .card, .price-card, .cta, .process-step{padding:20px}
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="brand">
+        <img src="assets/inklaunch-logo.jpg" alt="InkLaunch logo" />
+        <span>
+          InkLaunch 🚀
+          <small>Turn Views Into Clients</small>
+        </span>
+      </a>
+      <nav class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#package">Package</a>
+        <a href="#process">Process</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="btn btn-primary" href="https://www.tiktok.com/@toklaunchgrowth" target="_blank" rel="noopener">DM me on TikTok</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">🚀 TikTok Growth Support for Tattoo Artists</div>
+          <h1>Turn your <span class="gradient">TikTok views</span> into real client bookings.</h1>
+          <p class="lead">
+            InkLaunch helps tattoo artists post stronger content with professional edits, optimized captions, and targeted hashtags
+            that make your work look more premium and more bookable.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://www.tiktok.com/@toklaunchgrowth" target="_blank" rel="noopener">DM “DEMO” on TikTok</a>
+            <a class="btn btn-secondary" href="#package">See the €50 Package</a>
+          </div>
+
+          <div class="pill-row">
+            <div class="pill">3 edits included</div>
+            <div class="pill">Hashtags included</div>
+            <div class="pill">Caption included</div>
+            <div class="pill">Professional English copy</div>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>1 offer</strong>
+              <span>Simple starter package</span>
+            </div>
+            <div class="stat">
+              <strong>3 edits</strong>
+              <span>Ready for posting</span>
+            </div>
+            <div class="stat">
+              <strong>DM first</strong>
+              <span>More prices on TikTok</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-card-inner">
+            <div class="hero-logo">
+              <img src="assets/inklaunch-logo.jpg" alt="InkLaunch branded logo" />
+            </div>
+            <div class="profile-mini">
+              <img src="assets/tiktok-profile.jpg" alt="InkLaunch TikTok profile preview" />
+              <div>
+                <h3>InkLaunch 🚀</h3>
+                <p>@toklaunchgrowth</p>
+                <p class="muted">Professional TikTok content support for tattoo studios and artists.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <h2 class="section-title">What this service does</h2>
+        <p class="section-lead">
+          This offer is built for tattoo artists who want better short-form content without wasting time on captions, structure,
+          or post-ready presentation.
+        </p>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Content that looks more premium</h3>
+            <p class="muted">
+              Strong presentation matters. Better edits make your tattoos feel cleaner, more professional, and more valuable to potential clients.
+            </p>
+            <ul class="feature-list">
+              <li>Short-form edit structure designed for TikTok attention</li>
+              <li>Cleaner visual flow to highlight the tattoo result</li>
+              <li>Captions written to make the post easier to understand</li>
+              <li>Hashtags selected to support reach and niche targeting</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Built for client conversion</h3>
+            <p class="muted">
+              The goal is not only views. The goal is to position your page in a way that makes people trust your work and message you.
+            </p>
+            <ul class="feature-list">
+              <li>Showcase tattoos in a more booking-friendly format</li>
+              <li>Improve post consistency across your page</li>
+              <li>Save time on post creation and posting workflow</li>
+              <li>Use content as a lead source for more client inquiries</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="package">
+      <div class="container">
+        <h2 class="section-title">Starter Package</h2>
+        <p class="section-lead">
+          A simple professional entry offer for tattoo artists who want to test better content first.
+        </p>
+
+        <div class="package-wrap">
+          <div class="price-card">
+            <div class="badge">MOST DIRECT OFFER</div>
+            <h3 class="package-title">InkLaunch TikTok Starter</h3>
+            <div class="price">
+              <div class="amount">€50</div>
+              <div class="cycle">one-time</div>
+            </div>
+            <p class="price-note">
+              Get 3 professional edits with hashtags and a ready-to-use description for each post.
+            </p>
+
+            <ul class="simple-list">
+              <li>3 edited TikTok videos</li>
+              <li>Hashtags included</li>
+              <li>Description included</li>
+              <li>Built for tattoo content</li>
+              <li>Professional English positioning</li>
+            </ul>
+
+            <div class="price-box">
+              <strong>For more prices:</strong>
+              <div class="muted" style="margin-top:6px;">DM me on TikTok for custom offers, larger packages, or ongoing content support.</div>
+            </div>
+
+            <div class="hero-actions" style="margin-top:22px; margin-bottom:0;">
+              <a class="btn btn-primary" href="https://www.tiktok.com/@toklaunchgrowth" target="_blank" rel="noopener">DM me on TikTok</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Best for</h3>
+            <ul class="simple-list">
+              <li>Tattoo artists testing short-form content</li>
+              <li>Studios that want a cleaner TikTok presence</li>
+              <li>Artists who need ready-to-post content support</li>
+            </ul>
+
+            <h3 style="margin-top:26px;">What you send</h3>
+            <ul class="simple-list">
+              <li>Your raw tattoo video clips</li>
+              <li>Your preferred tattoo style or vibe</li>
+              <li>Any CTA or message you want included</li>
+            </ul>
+
+            <h3 style="margin-top:26px;">What you get back</h3>
+            <ul class="simple-list">
+              <li>3 post-ready edits</li>
+              <li>3 matching caption ideas</li>
+              <li>3 sets of relevant hashtags</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="process">
+      <div class="container">
+        <h2 class="section-title">How it works</h2>
+        <p class="section-lead">
+          Keep it simple. You send the material, I shape it into stronger content, and you use it to get more attention and more inquiries.
+        </p>
+
+        <div class="process-grid">
+          <div class="process-step">
+            <div class="step-number">1</div>
+            <h3>Send your clips</h3>
+            <p class="muted">DM me on TikTok and send your raw content or ask for a custom setup.</p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">2</div>
+            <h3>I build your content</h3>
+            <p class="muted">I create the edits, match the caption angle, and add the hashtags for your niche.</p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">3</div>
+            <h3>You post and convert</h3>
+            <p class="muted">Use the content to improve your page presentation and attract more potential bookings.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <h2 class="section-title">FAQ</h2>
+        <div class="faq">
+          <details open>
+            <summary>What is included in the €50 package?</summary>
+            <p>Three edited TikTok videos, hashtags for each post, and a ready-to-use description for each one.</p>
+          </details>
+          <details>
+            <summary>Can I get more than 3 edits?</summary>
+            <p>Yes. For larger packages or custom work, DM me on TikTok and I will send you more pricing options.</p>
+          </details>
+          <details>
+            <summary>Who is this made for?</summary>
+            <p>This offer is positioned for tattoo artists and tattoo studios that want stronger TikTok content and more client interest.</p>
+          </details>
+          <details>
+            <summary>How do I order?</summary>
+            <p>Message me on TikTok, tell me what you need, and I will guide you from there.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta">
+          <h2>Ready to make your tattoo content look more bookable?</h2>
+          <p>
+            Start with the €50 package: 3 edits, hashtags, and descriptions included.
+            For more prices and custom offers, DM me on TikTok.
+          </p>
+          <a class="btn btn-primary" href="https://www.tiktok.com/@toklaunchgrowth" target="_blank" rel="noopener">DM me on TikTok</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <strong style="color:var(--text)">InkLaunch 🚀</strong><br />
+        <span>Turn Views Into Clients</span>
+      </div>
+      <div>
+        TikTok: <a href="https://www.tiktok.com/@toklaunchgrowth" target="_blank" rel="noopener" style="color:#fff">@toklaunchgrowth</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
